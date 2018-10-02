@@ -61,9 +61,14 @@ bool q_insert_head(queue_t *q, char *s) {
     return false;
   }
   strcpy(newh->value, s);
-  newh->next = q->head;
-  q->tail = newh->next;
-  q->head = newh;
+  if (q->size == 0) {
+    newh->next = NULL;
+    q->head = newh;
+    q->tail = newh;
+  } else {
+    newh->next = q->head;
+    q->head = newh;
+  }
   q->size++;
   return true;
 }
@@ -80,16 +85,24 @@ bool q_insert_tail(queue_t *q, char *s) {
     return false;
   /* You need to write the complete code for this function */
   /* Remember: It should operate in O(1) time */
-  list_ele_t *newh;
-  newh = malloc(sizeof(list_ele_t));
-  newh->value = malloc(strlen(s) * sizeof(char));
-  if (newh->value == NULL) {
-    free(newh);
+  list_ele_t *newt;
+  newt = malloc(sizeof(list_ele_t));
+  newt->value = malloc(strlen(s) * sizeof(char));
+  if (newt->value == NULL) {
+    free(newt);
     return false;
   }
-  strcpy(newh->value, s);
-  newh->next = q->tail;
-  q->tail = newh;
+  strcpy(newt->value, s);
+  if (q->size == 0) {
+    newt->next = NULL;
+    q->head = newt;
+    q->tail = newt;
+  } else {
+    newt->next = NULL;
+    q->tail->next = newt;
+    q->tail = newt;
+  }
+
   q->size++;
   return true;
 }
@@ -104,6 +117,7 @@ bool q_insert_tail(queue_t *q, char *s) {
 */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize) {
   /* You need to fix up this code. */
+
   q->head = q->head->next;
   return true;
 }
