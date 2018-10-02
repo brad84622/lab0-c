@@ -102,7 +102,6 @@ bool q_insert_tail(queue_t *q, char *s) {
     q->tail->next = newt;
     q->tail = newt;
   }
-
   q->size++;
   return true;
 }
@@ -117,8 +116,15 @@ bool q_insert_tail(queue_t *q, char *s) {
 */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize) {
   /* You need to fix up this code. */
-
+  if (q == NULL || q->size == 0)
+    return false;
+  strcpy(sp, q->head->value);
+  bufsize--;
+  list_ele_t *removnode = q->head;
   q->head = q->head->next;
+  free(removnode->value);
+  free(removnode);
+  q->size--;
   return true;
 }
 
